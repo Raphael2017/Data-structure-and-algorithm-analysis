@@ -1,8 +1,8 @@
 #include <iostream>
 #include "Graph.h"
-#include <assert.h>
+#include <microtest.h>
 
-IGraph<char, int> *graph_ctor1() {
+TEST(BFS_TEST) {
     auto graph = make_graph_matrix<char, int>();
     auto s = graph->VInsert('S');
     auto a = graph->VInsert('A');
@@ -25,22 +25,21 @@ IGraph<char, int> *graph_ctor1() {
     graph->EInsert(0, g->Index(), f->Index(), 1);
     graph->Bfs(s->Index());
 
-    assert(graph->Exists(s->Index(), a->Index())->Status() == IEdge<int>::TREE);
-    assert(graph->Exists(s->Index(), c->Index())->Status() == IEdge<int>::TREE);
-    assert(graph->Exists(s->Index(), d->Index())->Status() == IEdge<int>::TREE);
-    assert(graph->Exists(a->Index(), c->Index())->Status() == IEdge<int>::CROSS);
-    assert(graph->Exists(a->Index(), e->Index())->Status() == IEdge<int>::TREE);
-    assert(graph->Exists(c->Index(), b->Index())->Status() == IEdge<int>::TREE);
-    assert(graph->Exists(d->Index(), b->Index())->Status() == IEdge<int>::CROSS);
-    assert(graph->Exists(e->Index(), f->Index())->Status() == IEdge<int>::TREE);
-    assert(graph->Exists(e->Index(), g->Index())->Status() == IEdge<int>::TREE);
-    assert(graph->Exists(g->Index(), b->Index())->Status() == IEdge<int>::CROSS);
-    assert(graph->Exists(g->Index(), f->Index())->Status() == IEdge<int>::CROSS);
-
-    return graph;
+    ASSERT_TRUE(graph->Exists(s->Index(), a->Index())->Status() == IEdge<int>::TREE);
+    ASSERT_TRUE(graph->Exists(s->Index(), c->Index())->Status() == IEdge<int>::TREE);
+    ASSERT_TRUE(graph->Exists(s->Index(), d->Index())->Status() == IEdge<int>::TREE);
+    ASSERT_TRUE(graph->Exists(a->Index(), c->Index())->Status() == IEdge<int>::CROSS);
+    ASSERT_TRUE(graph->Exists(a->Index(), e->Index())->Status() == IEdge<int>::TREE);
+    ASSERT_TRUE(graph->Exists(c->Index(), b->Index())->Status() == IEdge<int>::TREE);
+    ASSERT_TRUE(graph->Exists(d->Index(), b->Index())->Status() == IEdge<int>::CROSS);
+    ASSERT_TRUE(graph->Exists(e->Index(), f->Index())->Status() == IEdge<int>::TREE);
+    ASSERT_TRUE(graph->Exists(e->Index(), g->Index())->Status() == IEdge<int>::TREE);
+    ASSERT_TRUE(graph->Exists(g->Index(), b->Index())->Status() == IEdge<int>::CROSS);
+    ASSERT_TRUE(graph->Exists(g->Index(), f->Index())->Status() == IEdge<int>::CROSS);
+    delete (graph);
 }
 
-IGraph<char, int> *graph_ctor2() {
+TEST(DFS_TEST) {
     auto graph = make_graph_matrix<char, int>();
     auto a = graph->VInsert('A');
     auto b = graph->VInsert('B');
@@ -63,24 +62,16 @@ IGraph<char, int> *graph_ctor2() {
 
     graph->Dfs(a->Index());
 
-    assert(graph->Exists(a->Index(), b->Index())->Status() == IEdge<int>::TREE);
-    assert(graph->Exists(a->Index(), c->Index())->Status() == IEdge<int>::FORWARD);
-    assert(graph->Exists(a->Index(), f->Index())->Status() == IEdge<int>::TREE);
-    assert(graph->Exists(b->Index(), c->Index())->Status() == IEdge<int>::TREE);
-    assert(graph->Exists(d->Index(), a->Index())->Status() == IEdge<int>::CROSS);
-    assert(graph->Exists(d->Index(), e->Index())->Status() == IEdge<int>::TREE);
-    assert(graph->Exists(e->Index(), f->Index())->Status() == IEdge<int>::CROSS);
-    assert(graph->Exists(f->Index(), g->Index())->Status() == IEdge<int>::TREE);
-    assert(graph->Exists(g->Index(), a->Index())->Status() == IEdge<int>::BACKWARD);
-    assert(graph->Exists(g->Index(), c->Index())->Status() == IEdge<int>::CROSS);
-
-    return graph;
+    ASSERT_TRUE(graph->Exists(a->Index(), b->Index())->Status() == IEdge<int>::TREE);
+    ASSERT_TRUE(graph->Exists(a->Index(), c->Index())->Status() == IEdge<int>::FORWARD);
+    ASSERT_TRUE(graph->Exists(a->Index(), f->Index())->Status() == IEdge<int>::TREE);
+    ASSERT_TRUE(graph->Exists(b->Index(), c->Index())->Status() == IEdge<int>::TREE);
+    ASSERT_TRUE(graph->Exists(d->Index(), a->Index())->Status() == IEdge<int>::CROSS);
+    ASSERT_TRUE(graph->Exists(d->Index(), e->Index())->Status() == IEdge<int>::TREE);
+    ASSERT_TRUE(graph->Exists(e->Index(), f->Index())->Status() == IEdge<int>::CROSS);
+    ASSERT_TRUE(graph->Exists(f->Index(), g->Index())->Status() == IEdge<int>::TREE);
+    ASSERT_TRUE(graph->Exists(g->Index(), a->Index())->Status() == IEdge<int>::BACKWARD);
+    ASSERT_TRUE(graph->Exists(g->Index(), c->Index())->Status() == IEdge<int>::CROSS);
 }
 
-int main() {
-    auto g = graph_ctor1();
-    delete g;
-    g = graph_ctor2();
-    delete g;
-    return 0;
-}
+TEST_MAIN();
